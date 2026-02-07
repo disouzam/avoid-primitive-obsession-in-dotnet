@@ -31,3 +31,14 @@ cd PrimitiveObsession.Reference
 dotnet new console --language C# --name PrimitiveObsession.Reference --framework net9.0 --use-program-main --output . --dry-run # Check what will be done
 dotnet new console --language C# --name PrimitiveObsession.Reference --framework net9.0 --use-program-main --output .
 ```
+
+The idea built in the base project was to pass string as argument to search for a key in resource files. Resource files are, by nature, static and keys are fixed and known at compile time. So it would be good if some pre-validation happened when calling parsing function to obtain translation messages, in this case. One would argue that enums would be a good use case here and they are indeed useful but, to explore a broader scenario, a new implementation will be tried.
+
+# Improved project
+
+```bash
+mkdir PrimitiveObsession.SolutionOne
+cd PrimitiveObsession.SolutionOne
+dotnet new console --language C# --name PrimitiveObsession.SolutionOne --framework net9.0 --use-program-main --output . --dry-run # Check what will be done
+dotnet new console --language C# --name PrimitiveObsession.SolutionOne --framework net9.0 --use-program-main --output .
+```
