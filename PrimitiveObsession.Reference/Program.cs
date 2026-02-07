@@ -10,42 +10,59 @@ public static class Program
 {
     static void Main(string[] args)
     {
-        var message = "Hello, World!";
+        var key= "BaseGreeting";
         var translator = new StringTranslator();
 
-        var parsedMessage = translator.ParseString(message);
+        var parsedMessage = translator.ParseString(key);
         Console.WriteLine(parsedMessage);
 
-        // Option 1: Using the auto-generated Resources class (strongly typed)
-        Console.WriteLine("Strongly typed resource:");
-        Console.WriteLine(Translations.BaseGreeting);
-
-        // Option 2: Using ResourceManager manually
-        Console.WriteLine("\nUsing ResourceManager manually:");
-        ResourceManager rm = new ResourceManager(
-            "PrimitiveObsession.Reference.Properties.Translations", // Namespace + .resx filename (without extension)
-            typeof(Program).Assembly
-        );
-
-        // Retrieve default culture string
-        string defaultMessage = rm.GetString("BaseGreeting");
-        Console.WriteLine(defaultMessage);
-
-        // Retrieve specific culture string (if localized .resx exists)
-        string portugueseMessage = rm.GetString("BaseGreeting", new CultureInfo("pt-BR"));
-        Console.WriteLine(portugueseMessage ?? "(Portuguese (BR) translation not found)");
+        var parsedMessage2 = translator.ParseString(key, new CultureInfo("pt-BR"));
+        Console.WriteLine(parsedMessage2);
     }
 }
 
 
 internal class StringTranslator
 {
-    public string ParseString(string input)
+    private readonly ResourceManager resourceManager;
+
+    public StringTranslator()
     {
-        if (string.IsNullOrEmpty(input))
+        resourceManager = new ResourceManager(
+            "PrimitiveObsession.Reference.Properties.Translations", // Namespace + .resx filename (without extension)
+            typeof(Program).Assembly
+        );
+    }
+
+    public string ParseString(string key, CultureInfo? cultureInfo = null)
+    {
+        if (string.IsNullOrEmpty(key))
         {
-            throw new ArgumentException("Input cannot be null or empty.", nameof(input));
+            throw new ArgumentException("Key cannot be null or empty.", nameof(key));
         }
-        return input.Trim();
+
+        if (cultureInfo != null)
+        {
+            var localizedMessage = resourceManager.GetString(key, cultureInfo);
+            if (!string.IsNullOrEmpty(localizedMessage))
+            {
+                return localizedMessage;
+            }else
+            {
+                return string.Format("Translation for key '{0}' not found in culture '{1}'.", key, cultureInfo.Name);
+            }
+        }
+        else
+        {
+            var defaultMessage = resourceManager.GetString(key);
+            if (!string.IsNullOrEmpty(defaultMessage))
+            {
+                return defaultMessage;
+            }
+            else
+            {
+                return string.Format("Translation for key '{0}' not found in culture '{1}'.", key, CultureInfo.CurrentCulture);
+            }
+        }
     }
 }
