@@ -17,3 +17,17 @@ On blogs documenting alternatives:
 On technical aspects:
 - [Create record types](https://learn.microsoft.com/en-us/dotnet/csharp/tutorials/records)
 - [Operator overloading - predefined unary, arithmetic, equality, and comparison operators](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/operator-overloading)
+
+
+# Base project
+
+A base console project will be created with dummy code to illustrate some problems of primitive obsession
+
+```bash
+mkdir PrimitiveObsession.Reference
+cd PrimitiveObsession.Reference
+# https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-new
+# https://learn.microsoft.com/en-us/dotnet/standard/frameworks
+dotnet new console --language C# --name PrimitiveObsession.Reference --framework net9.0 --use-program-main --output . --dry-run # Check what will be done
+dotnet new console --language C# --name PrimitiveObsession.Reference --framework net9.0 --use-program-main --output .
+```
