@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Resources;
 
@@ -18,6 +19,11 @@ public static class Program
 
         var parsedMessage2 = translator.ParseString(key, new CultureInfo("pt-BR"));
         Console.WriteLine(parsedMessage2);
+
+        var incorrectKey = "WelcomeMessage";
+        var parsedMessage3 = translator.ParseString(incorrectKey);
+        Console.WriteLine(parsedMessage3);
+
     }
 }
 
@@ -25,6 +31,12 @@ public static class Program
 internal class StringTranslator
 {
     private readonly ResourceManager resourceManager;
+
+    private readonly List<string> allowedKeys = new List<string> 
+    { 
+        "BaseGreeting", 
+        "FarewellMessage" 
+    };
 
     public StringTranslator()
     {
@@ -39,6 +51,11 @@ internal class StringTranslator
         if (string.IsNullOrEmpty(key))
         {
             throw new ArgumentException("Key cannot be null or empty.", nameof(key));
+        }
+
+        if (!allowedKeys.Contains(key))
+        {
+            throw new ArgumentException($"Key '{key}' is not allowed. Allowed keys are: {string.Join(", ", allowedKeys)}.", nameof(key));
         }
 
         if (cultureInfo != null)
