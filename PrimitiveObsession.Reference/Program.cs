@@ -1,4 +1,6 @@
-﻿namespace PrimitiveObsession.Reference;
+﻿using System;
+
+namespace PrimitiveObsession.Reference;
 
 class Program
 {
