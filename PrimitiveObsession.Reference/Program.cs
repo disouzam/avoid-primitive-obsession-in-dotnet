@@ -23,6 +23,9 @@ public static class Program
             var parsedMessage2 = translator.ParseString(key, new CultureInfo("pt-BR"));
             Console.WriteLine(parsedMessage2);
 
+            var farewellMessage = translator.ParseString("FarewellMessage", new CultureInfo("pt-BR"));
+            Console.WriteLine(farewellMessage);
+
             var incorrectKey = "WelcomeMessage";
             var parsedMessage3 = translator.ParseString(incorrectKey);
             Console.WriteLine(parsedMessage3);
