@@ -11,18 +11,26 @@ public static class Program
 {
     static void Main(string[] args)
     {
-        var key= "BaseGreeting";
-        var translator = new StringTranslator();
 
-        var parsedMessage = translator.ParseString(key);
-        Console.WriteLine(parsedMessage);
+        try
+        {
+            var key = "BaseGreeting";
+            var translator = new StringTranslator();
 
-        var parsedMessage2 = translator.ParseString(key, new CultureInfo("pt-BR"));
-        Console.WriteLine(parsedMessage2);
+            var parsedMessage = translator.ParseString(key);
+            Console.WriteLine(parsedMessage);
 
-        var incorrectKey = "WelcomeMessage";
-        var parsedMessage3 = translator.ParseString(incorrectKey);
-        Console.WriteLine(parsedMessage3);
+            var parsedMessage2 = translator.ParseString(key, new CultureInfo("pt-BR"));
+            Console.WriteLine(parsedMessage2);
+
+            var incorrectKey = "WelcomeMessage";
+            var parsedMessage3 = translator.ParseString(incorrectKey);
+            Console.WriteLine(parsedMessage3);
+        }
+        catch 
+        {
+            Console.WriteLine("One or more errors were detected!");
+        }
 
     }
 }
