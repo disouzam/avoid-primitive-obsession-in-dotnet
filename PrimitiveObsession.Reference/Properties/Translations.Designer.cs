@@ -68,5 +68,14 @@ namespace PrimitiveObsession.Reference.Properties {
                 return ResourceManager.GetString("BaseGreeting", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I wish you all the best in your next phase of your journey! Take care and stay safe!.
+        /// </summary>
+        public static string FarewellMessage {
+            get {
+                return ResourceManager.GetString("FarewellMessage", resourceCulture);
+            }
+        }
     }
 }

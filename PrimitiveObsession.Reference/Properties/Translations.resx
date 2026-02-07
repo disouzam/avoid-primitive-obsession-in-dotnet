@@ -120,4 +120,7 @@
   <data name="BaseGreeting" xml:space="preserve">
     <value>Hello, World!</value>
   </data>
+  <data name="FarewellMessage" xml:space="preserve">
+    <value>I wish you all the best in your next phase of your journey! Take care and stay safe!</value>
+  </data>
 </root>
