@@ -86,40 +86,40 @@ internal class StringTranslator
         );
     }
 
-    public string ParseString(string key, CultureInfo? cultureInfo = null)
+    public string ParseString(TranslationKeys translationKeys, CultureInfo? cultureInfo = null)
     {
-        if (string.IsNullOrEmpty(key))
+        if (string.IsNullOrEmpty(translationKeys.Value))
         {
-            throw new ArgumentException("Key cannot be null or empty.", nameof(key));
+            throw new ArgumentException("Key cannot be null or empty.", nameof(translationKeys));
         }
 
-        if (!allowedKeys.Contains(key))
+        if (!allowedKeys.Contains(translationKeys.Value))
         {
-            throw new ArgumentException($"Key '{key}' is not allowed. Allowed keys are: {string.Join(", ", allowedKeys)}.", nameof(key));
+            throw new ArgumentException($"Key '{translationKeys.Value}' is not allowed. Allowed keys are: {string.Join(", ", allowedKeys)}.", nameof(translationKeys));
         }
 
         if (cultureInfo != null)
         {
-            var localizedMessage = resourceManager.GetString(key, cultureInfo);
+            var localizedMessage = resourceManager.GetString(translationKeys.Value, cultureInfo);
             if (!string.IsNullOrEmpty(localizedMessage))
             {
                 return localizedMessage;
             }
             else
             {
-                return string.Format("Translation for key '{0}' not found in culture '{1}'.", key, cultureInfo.Name);
+                return string.Format("Translation for key '{0}' not found in culture '{1}'.", translationKeys.Value, cultureInfo.Name);
             }
         }
         else
         {
-            var defaultMessage = resourceManager.GetString(key);
+            var defaultMessage = resourceManager.GetString(translationKeys.Value);
             if (!string.IsNullOrEmpty(defaultMessage))
             {
                 return defaultMessage;
             }
             else
             {
-                return string.Format("Translation for key '{0}' not found in culture '{1}'.", key, CultureInfo.CurrentCulture);
+                return string.Format("Translation for key '{0}' not found in culture '{1}'.", translationKeys.Value, CultureInfo.CurrentCulture);
             }
         }
     }
