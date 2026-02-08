@@ -11,22 +11,22 @@ public static class Program
 {
     static void Main(string[] args)
     {
-
         try
         {
-            var key = "BaseGreeting";
+            var key1 = new TranslationKeys("BaseGreeting");
             var translator = new StringTranslator();
 
-            var parsedMessage = translator.ParseString(key);
+            var parsedMessage = translator.ParseString(key1);
             Console.WriteLine(parsedMessage);
 
-            var parsedMessage2 = translator.ParseString(key, new CultureInfo("pt-BR"));
+            var parsedMessage2 = translator.ParseString(key1, new CultureInfo("pt-BR"));
             Console.WriteLine(parsedMessage2);
-
-            var farewellMessage = translator.ParseString("FarewellMessage", new CultureInfo("pt-BR"));
+            
+            var key2 = new TranslationKeys("FarewellMessage");
+            var farewellMessage = translator.ParseString(key2, new CultureInfo("pt-BR"));
             Console.WriteLine(farewellMessage);
 
-            var incorrectKey = "WelcomeMessage";
+            var incorrectKey = new TranslationKeys("WelcomeMessage");
             var parsedMessage3 = translator.ParseString(incorrectKey);
             Console.WriteLine(parsedMessage3);
         }
