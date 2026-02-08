@@ -70,12 +70,6 @@ internal class StringTranslator
 {
     private readonly ResourceManager resourceManager;
 
-    private readonly List<string> allowedKeys = new List<string>
-    {
-        "BaseGreeting",
-        "FarewellMessage"
-    };
-
     public StringTranslator()
     {
         resourceManager = new ResourceManager(
@@ -86,16 +80,6 @@ internal class StringTranslator
 
     public string ParseString(TranslationKeys translationKeys, CultureInfo? cultureInfo = null)
     {
-        if (string.IsNullOrEmpty(translationKeys.Value))
-        {
-            throw new ArgumentException("Key cannot be null or empty.", nameof(translationKeys));
-        }
-
-        if (!allowedKeys.Contains(translationKeys.Value))
-        {
-            throw new ArgumentException($"Key '{translationKeys.Value}' is not allowed. Allowed keys are: {string.Join(", ", allowedKeys)}.", nameof(translationKeys));
-        }
-
         if (cultureInfo != null)
         {
             var localizedMessage = resourceManager.GetString(translationKeys.Value, cultureInfo);
