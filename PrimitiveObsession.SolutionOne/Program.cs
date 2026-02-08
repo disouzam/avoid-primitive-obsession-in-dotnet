@@ -11,7 +11,7 @@ public static class Program
     {
         try
         {
-            var key1 = new TranslationKeys("BaseGreeting");
+            var key1 = new TranslationKeys(TranslationKeyOption.BaseGreeting);
             var translator = new StringTranslator();
 
             var parsedMessage = translator.ParseString(key1);
@@ -20,11 +20,11 @@ public static class Program
             var parsedMessage2 = translator.ParseString(key1, new CultureInfo("pt-BR"));
             Console.WriteLine(parsedMessage2);
             
-            var key2 = new TranslationKeys("FarewellMessage");
+            var key2 = new TranslationKeys(TranslationKeyOption.FarewellMessage);
             var farewellMessage = translator.ParseString(key2, new CultureInfo("pt-BR"));
             Console.WriteLine(farewellMessage);
 
-            var incorrectKey = new TranslationKeys("WelcomeMessage");
+            var incorrectKey = new TranslationKeys((TranslationKeyOption)999);
             var parsedMessage3 = translator.ParseString(incorrectKey);
             Console.WriteLine(parsedMessage3);
         }
@@ -36,34 +36,34 @@ public static class Program
     }
 }
 
+internal enum TranslationKeyOption
+{
+    BaseGreeting = 0,
+    FarewellMessage = 1
+}
+
 internal record struct TranslationKeys
 {
     public string Value { get; private set; }
 
-    private readonly List<string> allowedKeys = new List<string>
+    private readonly Dictionary<TranslationKeyOption, string> keyMapping = new Dictionary<TranslationKeyOption, string>
     {
-        "BaseGreeting",
-        "FarewellMessage"
+        { TranslationKeyOption.BaseGreeting, "BaseGreeting" },
+        { TranslationKeyOption.FarewellMessage, "FarewellMessage" }
     };
 
-    public TranslationKeys(string keyName)
-    {
-        if (string.IsNullOrEmpty(keyName))
+    public TranslationKeys(TranslationKeyOption keyOption)
+    { 
+        if (!keyMapping.ContainsKey(keyOption))
         {
-            throw new ArgumentException("Key cannot be null or empty.", nameof(keyName));
+            throw new ArgumentException($"Key option '{keyOption}' is not defined in the mapping.", nameof(keyOption));
         }
-        if (!allowedKeys.Contains(keyName))
-        {
-            throw new ArgumentException($"Key '{keyName}' is not allowed. Allowed keys are: {string.Join(", ", allowedKeys)}.", nameof(keyName));
-        }
-
-        Value = keyName;
+        Value = keyMapping[keyOption];
     }
 
     public static implicit operator string(TranslationKeys translationKey) => translationKey.Value;
 
-    public static implicit operator TranslationKeys(string keyName) => new TranslationKeys(keyName);
-
+    public static implicit operator TranslationKeys(TranslationKeyOption keyOption) => new TranslationKeys(keyOption);
 }
 
 internal class StringTranslator
