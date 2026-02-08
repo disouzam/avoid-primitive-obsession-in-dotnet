@@ -30,7 +30,7 @@ public static class Program
             var parsedMessage3 = translator.ParseString(incorrectKey);
             Console.WriteLine(parsedMessage3);
         }
-        catch 
+        catch
         {
             Console.WriteLine("One or more errors were detected!");
         }
@@ -38,15 +38,44 @@ public static class Program
     }
 }
 
+internal record struct TranslationKeys
+{
+    public string Value { get; private set; }
+
+    private readonly List<string> allowedKeys = new List<string>
+    {
+        "BaseGreeting",
+        "FarewellMessage"
+    };
+
+    public TranslationKeys(string keyName)
+    {
+        if (string.IsNullOrEmpty(keyName))
+        {
+            throw new ArgumentException("Key cannot be null or empty.", nameof(keyName));
+        }
+        if (!allowedKeys.Contains(keyName))
+        {
+            throw new ArgumentException($"Key '{keyName}' is not allowed. Allowed keys are: {string.Join(", ", allowedKeys)}.", nameof(keyName));
+        }
+
+        Value = keyName;
+    }
+
+    public static implicit operator string(TranslationKeys translationKey) => translationKey.Value;
+
+    public static implicit operator TranslationKeys(string keyName) => new TranslationKeys(keyName);
+
+}
 
 internal class StringTranslator
 {
     private readonly ResourceManager resourceManager;
 
-    private readonly List<string> allowedKeys = new List<string> 
-    { 
-        "BaseGreeting", 
-        "FarewellMessage" 
+    private readonly List<string> allowedKeys = new List<string>
+    {
+        "BaseGreeting",
+        "FarewellMessage"
     };
 
     public StringTranslator()
@@ -75,7 +104,8 @@ internal class StringTranslator
             if (!string.IsNullOrEmpty(localizedMessage))
             {
                 return localizedMessage;
-            }else
+            }
+            else
             {
                 return string.Format("Translation for key '{0}' not found in culture '{1}'.", key, cultureInfo.Name);
             }
