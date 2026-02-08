@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Resources;
 
-using PrimitiveObsession.SolutionOne.Properties;
-
 namespace PrimitiveObsession.SolutionOne;
 
 public static class Program
