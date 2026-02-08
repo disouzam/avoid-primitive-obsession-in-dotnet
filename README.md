@@ -42,3 +42,17 @@ cd PrimitiveObsession.SolutionOne
 dotnet new console --language C# --name PrimitiveObsession.SolutionOne --framework net9.0 --use-program-main --output . --dry-run # Check what will be done
 dotnet new console --language C# --name PrimitiveObsession.SolutionOne --framework net9.0 --use-program-main --output .
 ```
+
+This **supposedly** improved project started as a verbatim copy of previous project, described above, and it was modified along the commits that constituted [Pull Request #2](https://github.com/disouzam/avoid-primitive-obsession-in-dotnet/pull/2) - An alternative approach to solve primitive obsession using record struct instead of strings and using enums to limit possible values.
+
+Instead of using `strings` as a loose argument type to `ParseString` function, a new record struct type named `TranslationKeys` was created with implicit operators defined to enable seamless use with strings, without need of frequent explicit casting or conversions all the time. This type enabled that validation happened inside object creation and not inside `ParseString` function so that `ParseString` would focus only in its logic of looking for translations in resource files (`*.resx`). An additional part of current solution was the creation of an enumeration that would hold the allowed values present in resource files. Here in this example it looks like an over-engineering effort but in a large application, it is usually hard to match all these elements (resource files and their keys, strings passed as argument to functions, understand what keys are in use and what are not) without a lot of manual effort.
+
+So an instance of `TranslationKeys` is created (using its constructor) using `TranslationKeyOptions` as its single argument and internally mapped to the string used by resource files. Depending on the schema of the keys, an enum would suffice for this mapping. But for keys that are strings in formats not allowed as enum values, a mapping using a Dictionary is required.
+
+In a nutshell, this is the sequence of steps to make a change with regards to updates to resources (which require a search string):
+
+1. A resource is updated with a new key and corresponding values in each language (e.g English and Portuguese-Brazil);
+2. The enumeration `TranslationKeyOptions` must be updated to include this new key;
+3. Then `TranslationKeys` record struct must be updated so that its private key to string mapping contains the new key and the value as string;
+4. No change needs to be performed in `StringTranslator`.
+    
