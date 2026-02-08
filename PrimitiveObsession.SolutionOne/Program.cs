@@ -82,26 +82,26 @@ internal class StringTranslator
     {
         if (cultureInfo != null)
         {
-            var localizedMessage = resourceManager.GetString(translationKeys.Value, cultureInfo);
+            var localizedMessage = resourceManager.GetString(translationKeys, cultureInfo);
             if (!string.IsNullOrEmpty(localizedMessage))
             {
                 return localizedMessage;
             }
             else
             {
-                return string.Format("Translation for key '{0}' not found in culture '{1}'.", translationKeys.Value, cultureInfo.Name);
+                return string.Format("Translation for key '{0}' not found in culture '{1}'.", translationKeys, cultureInfo.Name);
             }
         }
         else
         {
-            var defaultMessage = resourceManager.GetString(translationKeys.Value);
+            var defaultMessage = resourceManager.GetString(translationKeys);
             if (!string.IsNullOrEmpty(defaultMessage))
             {
                 return defaultMessage;
             }
             else
             {
-                return string.Format("Translation for key '{0}' not found in culture '{1}'.", translationKeys.Value, CultureInfo.CurrentCulture);
+                return string.Format("Translation for key '{0}' not found in culture '{1}'.", translationKeys, CultureInfo.CurrentCulture);
             }
         }
     }
